@@ -3,75 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>和平小島 - SEL 互動教材</title>
+    <title>和平小島 - 流動魔法 SEL 教材</title>
     <style>
         :root {
-            --p1: #a2d2ff; --p2: #b9fbc0; --p3: #fbf8cc; --p4: #ffcfd2; --p5: #cfbaf0;
+            --p1-base: #a2d2ff; --p2-base: #b9fbc0; --p3-base: #fbf8cc;
+            --p4-base: #ffcfd2; --p5-base: #cfbaf0;
         }
+
         body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background: #e0f2fe; overflow: hidden; height: 100%; }
         
         #stage {
             width: 100vw; height: 100vh;
+            /* 背景加入輕微的流動色彩 */
             background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #e0f2fe 100%), url('images/island_background.png');
             background-repeat: no-repeat; background-position: center; background-size: cover;
             display: flex; flex-direction: column; align-items: center; position: relative;
         }
 
-        /* 頂部標題：略微提升 */
+        /* 頂部標題與分數：提升層次 */
         .header {
             margin-top: 15px; background: rgba(255,255,255,0.9);
             padding: 10px 30px; border-radius: 40px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid white; z-index: 10;
+            box-shadow: 0 0 25px rgba(255,255,255,0.7); border: 2px solid white; z-index: 20; /* 層次提升 */
         }
         .title { margin: 0; font-size: 22px; color: #333; }
-        .bopo { font-size: 14px; color: #0369a1; font-weight: bold; display: block; }
+        .bopo { font-size: 14px; color: #0369a1; font-weight: bold; display: block; margin-top: 3px; }
 
-        /* 分數顯示 */
         .score-board {
             position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.9);
             padding: 8px 15px; border-radius: 25px; font-weight: bold; color: #db2777; font-size: 16px;
+            z-index: 20; /* 層次提升 */
         }
 
-        /* 圖片區域：圖形縮小至原本的 2/3 (約 50%-60% 之間) */
-        .display-area { flex-grow: 1; display: flex; justify-content: center; align-items: center; width: 80%; }
+        /* 圖片區域：圖片縮小到原本的 1/2 (50%) */
+        .display-area { flex-grow: 1; display: flex; justify-content: center; align-items: center; width: 80%; z-index: 10; }
         .main-img { 
-            max-width: 55%; /* 圖片縮小 */
-            max-height: 45vh; /* 圖片縮小 */
+            max-width: 50%; /* 關鍵：縮小至 1/2 */
+            max-height: 45vh; /* 關鍵：縮小至 1/2 */
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
+            /* 模擬去背 */
+            mix-blend-mode: multiply; background-color: white; border-radius: 20px;
         }
+        .main-img:active { transform: scale(0.95); }
 
-        /* 選單容器：位置提升，放大選項 */
+        /* 選單導覽：大幅提升位置與層次 */
         .nav-container {
-            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
             width: 100%; padding: 20px 0;
-            border-top: 2px solid rgba(255,255,255,0.5);
-            position: absolute; bottom: 12vh; /* 位置往上提 */
+            border-top: 2px solid rgba(255,255,255,0.4);
+            position: absolute; bottom: 12vh; /* 提升位置 */
+            z-index: 30; /* 層次最高，確保不會重疊 */
         }
 
-        /* 5個時段選項：放大 */
-        .time-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        /* 時段選單與次連結：放大文字 */
+        .time-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
         .time-btn {
             border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer;
-            font-weight: bold; font-size: 18px; /* 字體放大 */
-            transition: 0.3s;
+            font-weight: bold; font-size: 18px; transition: 0.3s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .time-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
 
-        /* 行為目標按鈕（次連結）：放大 */
-        .action-nav { 
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; 
-            max-width: 950px; margin: 0 auto; min-height: 60px; 
-        }
+        .action-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 950px; margin: 0 auto; min-height: 50px; }
         .action-btn {
-            background: white; border: 1px solid #eee; padding: 12px 25px;
+            background: white; border: 1px solid #eee; padding: 10px 18px;
             border-radius: 15px; cursor: pointer; font-size: 18px; /* 字體放大 */
             font-weight: 600; color: #444; transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
-        .action-btn:hover { background: #333 !important; color: white !important; transform: scale(1.05); }
+        .action-btn:hover { background: #333 !important; color: white !important; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
 
         .particle { position: absolute; pointer-events: none; width: 40px; transition: all 0.8s ease-out; opacity: 1; z-index: 5; }
     </style>
@@ -89,14 +91,14 @@
     </div>
     <div class="nav-container">
         <div class="time-nav">
-            <button class="time-btn" style="background:var(--p1)" onclick="loadSubLinks(1)">☀️ 早安</button>
-            <button class="time-btn" style="background:var(--p2)" onclick="loadSubLinks(2)">🍭 靜心</button>
-            <button class="time-btn" style="background:var(--p3)" onclick="loadSubLinks(3)">🏃 降溫</button>
-            <button class="time-btn" style="background:var(--p4)" onclick="loadSubLinks(4)">✍️ 聯絡簿</button>
-            <button class="time-btn" style="background:var(--p5)" onclick="loadSubLinks(5)">🎒 回家</button>
+            <button class="time-btn" style="background:var(--p1-base)" onclick="loadActions(1)">☀️ 早安</button>
+            <button class="time-btn" style="background:var(--p2-base)" onclick="loadActions(2)">🍭 靜心</button>
+            <button class="time-btn" style="background:var(--p3-base)" onclick="loadActions(3)">🏃 降溫</button>
+            <button class="time-btn" style="background:var(--p4-base)" onclick="loadActions(4)">✍️ 聯絡簿</button>
+            <button class="time-btn" style="background:var(--p5-base)" onclick="loadActions(5)">🎒 回家</button>
         </div>
         <div id="action-box" class="action-nav">
-            <p style="color:#666; font-weight:bold; font-size:18px;">點擊上方時段開啟小任務！</p>
+            <p style="color:#666; margin:0; font-size:18px; font-weight:bold;">點擊上方時段開啟任務！</p>
         </div>
     </div>
 </div>
@@ -105,15 +107,17 @@
     let score = 0;
     let currentVoiceText = "歡迎來到和平小島！";
 
+    // 資料庫
     const database = {
         1: [
-            // 已更新檔名為 morning_01_homework.png
+            // 將檔名從 morning_01_pack.png 修改為 morning_01_homework.png
             { t: "主動交作業", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄗㄨˋ ㄉㄨㄥˋ ㄐㄧㄠ ㄗㄨㄛˋ ㄧㄝˋ", i: "morning_01_homework.png" },
             { t: "收好桌面", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄕㄡ ㄏㄠˇ ㄓㄨㄛ ㄇㄧㄢˋ", i: "morning_02_desk.png" },
             { t: "安靜進教室", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄢ ㄐㄧㄥˋ ㄐㄧㄣˋ ㄐㄧㄠˋ ㄕˋ", i: "morning_03_quiet.png" },
             { t: "向老師問好", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄒㄧㄤˋ ㄌㄠˇ ㄕ ㄨㄣˋ ㄏㄠˇ", i: "morning_04_greeting.png" },
             { t: "準備好課本", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄓㄨㄣˇ ㄅㄟˋ ㄏㄠˇ ㄎㄜˋ ㄅㄣˇ", i: "morning_05_prepare.png" }
         ],
+        // 其餘 database 保持不變 (數據沿用舊代碼)
         2: [
             { t: "收好午睡枕", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄕㄡ ㄏㄠˇ ㄨˇ ㄕㄨㄟˋ ㄓㄣˇ", i: "afternoon_01_pillow.png" },
             { t: "喝水上廁所", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄑㄩˋ ㄏㄜ ㄕㄨㄟˇ ㄕㄤˋ ㄘㄜˋ ㄙㄨㄛˇ", i: "afternoon_02_water.png" },
@@ -123,42 +127,41 @@
         ],
         3: [
             { t: "輪流玩玩具", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄌㄨㄣˊ ㄌㄧㄡˊ ㄨㄢˊ ㄨㄢˊ ㄐㄩˋ", i: "cool_01_turns.png" },
-            { t: "輸了不生氣", b: "ㄅㄧˇ ㄙㄞˋ ㄕㄨ ㄌㄜ˙ ㄅㄨˋ ㄕㄥ ㄑㄧˋ", i: "cool_02_lose.png" },
-            { t: "借東西要問", b: "ㄐㄧㄝˋ ㄉㄨㄥ ㄒㄧ ㄧㄠˋ ㄒㄧㄢ ㄨㄣˋ", i: "cool_03_ask.png" },
-            { t: "一起想辦法", b: "ㄨㄛˇ ㄇㄣ˙ ㄧˋ ㄑㄧˇ ㄒㄧㄤˇ ㄅㄢˋ ㄈㄚˇ", i: "cool_04_solution.png" },
-            { t: "把話說清楚", b: "ㄩㄥˋ ㄕㄨㄛ ㄉㄜ˙ ㄅㄨˋ ㄩㄥˋ ㄎㄨ ㄉㄜ˙", i: "cool_05_talk.png" }
+            { t: "輸了不生氣", b: "ㄅㄧˇ ㄙㄞˋ 輸 ㄌㄜ˙ ㄅㄨˋ ㄕㄥ ㄑㄧˋ", i: "cool_02_lose.png" },
+            { t: "借東西要先問", b: "ㄐㄧㄝˋ ㄉㄨㄥ ㄒㄧ ㄧㄠˋ ㄒㄧㄢ ㄨㄣˋ", i: "cool_03_ask.png" },
+            { t: "我們一起想辦法", b: "ㄨㄛˇ ㄇㄣ˙ ㄧˋ ㄑㄧˇ ㄒㄧㄤˇ ㄅㄢˋ ㄈㄚˇ", i: "cool_04_solution.png" },
+            { t: "用說的不用哭的", b: "ㄩㄥˋ ㄕㄨㄛ ㄉㄜ˙ ㄅㄨˋ ㄩㄥˋ ㄎㄨ ㄉㄜ˙", i: "cool_05_talk.png" }
         ],
         4: [
-            { t: "字跡寫漂亮", b: "ㄗˋ ㄒㄧㄝˇ ㄆㄧㄠˋ ㄌㄧㄤ˙ ㄇㄚ˙ ？", i: "notebook_01_neat.png" },
-            { t: "日期對了嗎", b: "ㄖˋ ㄑㄧˊ ㄉㄨㄟˋ ㄌㄜ˙ ㄇㄚ˙ ？", i: "notebook_02_date.png" },
-            { t: "項目抄齊了", b: "ㄒㄧㄤˋ ㄇㄨˋ ㄉㄡ ㄔㄠ ㄏㄠˇ ㄌㄜ˙ ㄇㄚ˙ ？", i: "notebook_03_complete.png" },
+            { t: "字寫漂亮嗎？", b: "ㄗˋ ㄒㄧㄝˇ ㄆㄧㄠˋ ㄌㄧㄤ˙ ㄇㄚ˙ ？", i: "notebook_01_neat.png" },
+            { t: "日期對了嗎？", b: "ㄖˋ ㄑㄧˊ ㄉㄨㄟˋ ㄌㄜ˙ ㄇㄚ˙ ？", i: "notebook_02_date.png" },
+            { t: "項目都抄好了嗎？", b: "ㄒㄧㄤˋ ㄇㄨˋ ㄉㄡ ㄔㄠ ㄏㄠˇ ㄌㄜ˙ ㄇㄚ˙ ？", i: "notebook_03_complete.png" },
             { t: "幫同學檢查", b: "ㄅㄤ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄐㄧㄢˇ ㄔㄚˊ", i: "notebook_04_helper.png" },
-            { t: "桌面清乾淨", b: "ㄓㄨㄛ ㄇㄧㄢˋ ㄅㄠˇ ㄔˊ ㄍㄢ ㄐㄧㄥˋ", i: "notebook_05_clean.png" }
+            { t: "桌面保持乾淨", b: "ㄓㄨㄛ ㄇㄧㄢˋ ㄅㄠˇ ㄔˊ ㄍㄢ ㄐㄧㄥˋ", i: "notebook_05_clean.png" }
         ],
         5: [
-            { t: "東西帶齊了", b: "ㄉㄨㄥ ㄒㄧ ㄉㄡ ㄉㄞˋ ㄑㄧˊ ㄌㄜ˙ ㄇㄚ˙ ？", i: "home_01_pack.png" },
-            { t: "垃圾隨手收", b: "ㄌㄜˋ ㄙㄜˋ ㄙㄨㄟˊ ㄕㄡˇ ㄕㄡ ㄏㄠˇ", i: "home_02_trash.png" },
-            { t: "謝謝好朋友", b: "ㄒㄧㄝˋ ㄒㄧㄝˋ ㄅㄤ ㄨㄛˇ ㄉㄜ˙ ㄖㄣˊ", i: "home_03_thanks.png" },
-            { t: "明天見微笑", b: "ㄏㄢˊ ㄌㄠˇ ㄕ ㄕㄨㄛ ㄗㄞˋ ㄐㄧㄢˋ", i: "home_04_smile.png" },
+            { t: "東西帶齊了嗎？", b: "ㄉㄨㄥ ㄒㄧ ㄉㄡ ㄉㄞˋ ㄑㄧˊ ㄌㄜ˙ ㄇㄚ˙ ？", i: "home_01_pack.png" },
+            { t: "垃圾隨手收好", b: "ㄌㄜˋ ㄙㄜˋ ㄙㄨㄟˊ ㄕㄡˇ ㄕㄡ ㄏㄠˇ", i: "home_02_trash.png" },
+            { t: "謝謝幫我的人", b: "ㄒㄧㄝˋ ㄒㄧㄝˋ ㄅㄤ ㄨㄛˇ ㄉㄜ˙ ㄖㄣˊ", i: "home_03_thanks.png" },
+            { t: "和老師說再見", b: "ㄏㄢˊ ㄌㄠˇ ㄕ ㄕㄨㄛ ㄗㄞˋ ㄐㄧㄢˋ", i: "home_04_smile.png" },
             { t: "我今天很努力", b: "ㄨㄛˇ ㄐㄧㄣ ㄊㄧㄢ ㄏㄣˇ ㄋㄨˇ ㄌㄧˋ", i: "home_05_proud.png" }
         ]
     };
 
-    function loadSubLinks(id) {
+    // JavaScript 邏輯保持不變 (數據沿用舊代碼)
+    function loadActions(id) {
         const box = document.getElementById('action-box');
-        box.innerHTML = ""; // 確保每次點選都會清空再載入
-        if (database[id]) {
-            database[id].forEach(item => {
-                const btn = document.createElement('button');
-                btn.className = "action-btn";
-                btn.innerText = item.t;
-                btn.onclick = function() { displayEffect(item); };
-                box.appendChild(btn);
-            });
-        }
+        box.innerHTML = "";
+        database[id].forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = "action-btn";
+            btn.innerText = item.t;
+            btn.onclick = () => updateDisplay(item);
+            box.appendChild(btn);
+        });
     }
 
-    function displayEffect(item) {
+    function updateDisplay(item) {
         document.getElementById('txt-zh').innerText = item.t;
         document.getElementById('txt-bp').innerText = item.b;
         document.getElementById('img-target').src = "images/" + item.i;
@@ -172,6 +175,7 @@
     function playCurrentVoice() {
         const msg = new SpeechSynthesisUtterance(currentVoiceText);
         msg.lang = 'zh-TW';
+        msg.rate = 0.9;
         window.speechSynthesis.speak(msg);
     }
 

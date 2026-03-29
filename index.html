@@ -8,157 +8,165 @@
         :root {
             --p1: #a2d2ff; --p2: #b9fbc0; --p3: #fbf8cc; --p4: #ffcfd2; --p5: #cfbaf0;
         }
-        body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background: #e0f2fe; overflow: hidden; }
+        body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background: #e0f2fe; overflow: hidden; height: 100%; }
         
         #stage {
             width: 100vw; height: 100vh;
-            background: url('images/island_background.png') no-repeat center center;
-            background-size: cover; display: flex; flex-direction: column; align-items: center; position: relative;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #e0f2fe 100%), url('images/island_background.png');
+            background-repeat: no-repeat; background-position: center; background-size: cover;
+            display: flex; flex-direction: column; align-items: center; position: relative;
         }
 
-        /* 標題區 */
         .header {
-            margin-top: 20px; background: rgba(255,255,255,0.95);
-            padding: 15px 40px; border-radius: 50px; text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 2px solid white; z-index: 10;
+            margin-top: 15px; background: rgba(255,255,255,0.9);
+            padding: 10px 30px; border-radius: 40px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid white; z-index: 10;
         }
-        .title { margin: 0; font-size: 26px; color: #333; }
-        .bopo { font-size: 16px; color: #0369a1; display: block; margin-top: 5px; font-weight: bold; }
+        .title { margin: 0; font-size: 22px; color: #333; }
+        .bopo { font-size: 14px; color: #0369a1; font-weight: bold; display: block; }
 
-        /* 分數顯示 */
         .score-board {
-            position: absolute; top: 20px; left: 20px; background: white;
-            padding: 10px 20px; border-radius: 30px; font-weight: bold; color: #db2777;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 18px;
+            position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.9);
+            padding: 8px 15px; border-radius: 25px; font-weight: bold; color: #db2777; font-size: 16px;
         }
 
-        /* 主圖片展示 */
         .display-area { flex-grow: 1; display: flex; justify-content: center; align-items: center; width: 80%; }
         .main-img { 
-            max-width: 75%; max-height: 55vh; 
-            filter: drop-shadow(0 10px 25px rgba(0,0,0,0.2));
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 60%; max-height: 50vh; 
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
-        .main-img:active { transform: scale(0.95); }
 
-        /* 導覽按鈕區 */
-        .nav-container { background: rgba(255,255,255,0.8); backdrop-filter: blur(8px); width: 100%; padding: 15px 0; }
-        .time-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; }
-        .time-btn { border: 2px solid white; padding: 10px 18px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-
-        .action-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 1000px; margin: 0 auto; }
-        .action-btn {
-            background: white; border: 1px solid #ddd; padding: 8px 14px;
-            border-radius: 10px; cursor: pointer; font-size: 14px; transition: 0.2s;
+        .nav-container {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
+            width: 100%; padding: 15px 0;
+            border-top: 2px solid rgba(255,255,255,0.5);
+            position: absolute; bottom: 8vh;
         }
-        .action-btn:hover { background: #333; color: white; }
 
-        /* 能量球特效 */
-        .particle { position: absolute; pointer-events: none; width: 40px; transition: all 0.8s ease-out; opacity: 1; }
+        .time-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .time-btn {
+            border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer;
+            font-weight: bold; font-size: 15px; transition: 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .time-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+
+        .action-nav { 
+            display: flex; flex-wrap: wrap; justify(content): center; gap: 12px; 
+            max-width: 950px; margin: 0 auto; min-height: 50px; justify-content: center;
+        }
+        .action-btn {
+            background: white; border: 1px solid #eee; padding: 12px 22px;
+            border-radius: 15px; cursor: pointer; font-size: 18px;
+            font-weight: 600; color: #444; transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .action-btn:hover { background: #333 !important; color: white !important; transform: scale(1.05); }
+
+        .particle { position: absolute; pointer-events: none; width: 40px; transition: all 0.8s ease-out; opacity: 1; z-index: 5; }
     </style>
 </head>
 <body>
 
 <div id="stage">
     <div class="score-board">✨ 能量點數: <span id="score">0</span></div>
-
     <div class="header">
         <h1 id="txt-zh" class="title">和平小島冒險</h1>
         <span id="txt-bp" class="bopo">ㄏㄜˊ ㄆㄧㄥˊ ㄒㄧㄠˇ ㄉㄠˇ ㄇㄠˋ ㄒㄧㄢˇ</span>
     </div>
-
     <div class="display-area">
         <img id="img-target" src="images/ui_start_button.png" class="main-img" onclick="playCurrentVoice()">
     </div>
-
     <div class="nav-container">
         <div class="time-nav">
-            <button class="time-btn" style="background:var(--p1)" onclick="loadActions(1)">☀️ 早安</button>
-            <button class="time-btn" style="background:var(--p2)" onclick="loadActions(2)">🍭 靜心</button>
-            <button class="time-btn" style="background:var(--p3)" onclick="loadActions(3)">🏃 降溫</button>
-            <button class="time-btn" style="background:var(--p4)" onclick="loadActions(4)">✍️ 聯絡簿</button>
-            <button class="time-btn" style="background:var(--p5)" onclick="loadActions(5)">🎒 回家</button>
+            <button class="time-btn" style="background:var(--p1)" onclick="loadSubLinks(1)">☀️ 早安</button>
+            <button class="time-btn" style="background:var(--p2)" onclick="loadSubLinks(2)">🍭 靜心</button>
+            <button class="time-btn" style="background:var(--p3)" onclick="loadSubLinks(3)">🏃 降溫</button>
+            <button class="time-btn" style="background:var(--p4)" onclick="loadSubLinks(4)">✍️ 聯絡簿</button>
+            <button class="time-btn" style="background:var(--p5)" onclick="loadSubLinks(5)">🎒 回家</button>
         </div>
-        <div id="action-box" class="action-nav"></div>
+        <div id="action-box" class="action-nav">
+            <p style="color:#666; font-weight:bold;">點擊上方時段開啟任務！</p>
+        </div>
     </div>
 </div>
 
 <script>
     let score = 0;
-    let currentVoiceText = "歡迎來到和平小島，讓我們開始冒險吧！";
+    let currentVoiceText = "歡迎來到和平小島！";
 
     const database = {
         1: [
-            { t: "主動交作業", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄗㄨˋ ㄉㄨㄥˋ ㄐㄧㄠ ㄗㄨㄛˋ ㄧㄝˋ", i: "morning_01_pack.png", s: "我會主動交作業" },
-            { t: "收好桌面", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄕㄡ ㄏㄠˇ ㄓㄨㄛ ㄇㄧㄢˋ", i: "morning_02_desk.png", s: "我會收好桌面" },
-            { t: "安靜進教室", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄢ ㄐㄧㄥˋ ㄐㄧㄣˋ ㄐㄧㄠˋ ㄕˋ", i: "morning_03_quiet.png", s: "我會安靜進教室" },
-            { t: "向老師問好", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄒㄧㄤˋ ㄌㄠˇ ㄕ ㄨㄣˋ ㄏㄠˇ", i: "morning_04_greeting.png", s: "我會向老師問好" },
-            { t: "準備好課本", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄓㄨㄣˇ ㄅㄟˋ ㄏㄠˇ ㄎㄜˋ ㄅㄣˇ", i: "morning_05_prepare.png", s: "我會準備好課本" }
+            { t: "主動交作業", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄗㄨˋ ㄉㄨㄥˋ ㄐㄧㄠ ㄗㄨㄛˋ ㄧㄝˋ", i: "morning_01_pack.png" },
+            { t: "收好桌面", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄕㄡ ㄏㄠˇ ㄓㄨㄛ ㄇㄧㄢˋ", i: "morning_02_desk.png" },
+            { t: "安靜進教室", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄢ ㄐㄧㄥˋ ㄐㄧㄣˋ ㄐㄧㄠˋ ㄕˋ", i: "morning_03_quiet.png" },
+            { t: "向老師問好", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄒㄧㄤˋ ㄌㄠˇ ㄕ ㄨㄣˋ ㄏㄠˇ", i: "morning_04_greeting.png" },
+            { t: "準備好課本", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄓㄨㄣˇ ㄅㄟˋ ㄏㄠˇ ㄎㄜˋ ㄅㄣˇ", i: "morning_05_prepare.png" }
         ],
         2: [
-            { t: "收好午睡枕", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄕㄡ ㄏㄠˇ ㄨˇ ㄕㄨㄟˋ ㄓㄣˇ", i: "afternoon_01_pillow.png", s: "我會收好午睡枕" },
-            { t: "喝水上廁所", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄑㄩˋ ㄏㄜ ㄕㄨㄟˇ ㄕㄤˋ ㄘㄜˋ ㄙㄨㄛˇ", i: "afternoon_02_water.png", s: "我會去喝水上廁所" },
-            { t: "聽清楚指令", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄊㄧㄥ ㄑㄧㄥ ㄔㄨˇ ㄌㄠˇ ㄕ ㄕㄨㄛ ㄏㄨㄚˋ", i: "afternoon_03_listen.png", s: "我會聽清楚老師說話" },
-            { t: "排隊不推擠", b: "ㄆㄞˊ ㄉㄨㄟˋ ㄕˊ ㄅㄨˋ ㄊㄨㄟ ㄐㄧˇ", i: "afternoon_04_lineup.png", s: "排隊時不推擠" },
-            { t: "喚醒小腦袋", b: "ㄖㄤˋ ㄉㄚˋ ㄋㄠˇ ㄒㄧㄥˇ ㄍㄨㄛˋ ㄌㄞˊ", i: "afternoon_05_wakeup.png", s: "讓大腦醒過來" }
+            { t: "收好午睡枕", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄕㄡ ㄏㄠˇ ㄨˇ ㄕㄨㄟˋ ㄓㄣˇ", i: "afternoon_01_pillow.png" },
+            { t: "喝水上廁所", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄑㄩˋ ㄏㄜ ㄕㄨㄟˇ ㄕㄤˋ ㄘㄜˋ ㄙㄨㄛˇ", i: "afternoon_02_water.png" },
+            { t: "聽清楚指令", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄊㄧㄥ ㄑㄧㄥ ㄔㄨˇ ㄌㄠˇ ㄕ ㄕㄨㄛ ㄏㄨㄚˋ", i: "afternoon_03_listen.png" },
+            { t: "排隊不推擠", b: "ㄆㄞˊ ㄉㄨㄟˋ ㄕˊ ㄅㄨˋ ㄊㄨㄟ ㄐㄧˇ", i: "afternoon_04_lineup.png" },
+            { t: "喚醒小腦袋", b: "ㄖㄤˋ ㄉㄚˋ ㄋㄠˇ ㄒㄧㄥˇ ㄍㄨㄛˋ ㄌㄞˊ", i: "afternoon_05_wakeup.png" }
         ],
         3: [
-            { t: "輪流玩玩具", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄌㄨㄣˊ ㄌㄧㄡˊ ㄨㄢˊ ㄨㄢˊ ㄐㄩˋ", i: "cool_01_turns.png", s: "我會輪流玩玩具" },
-            { t: "輸了不生氣", b: "ㄅㄧˇ ㄙㄞˋ ㄕㄨ ㄌㄜ˙ ㄅㄨˋ ㄕㄥ ㄑㄧˋ", i: "cool_02_lose.png", s: "比賽輸了不生氣" },
-            { t: "借東西要先問", b: "ㄐㄧㄝˋ ㄉㄨㄥ ㄒㄧ ㄧㄠˋ ㄒㄧㄢ ㄨㄣˋ", i: "cool_03_ask.png", s: "借東西要先問" },
-            { t: "一起想辦法", b: "ㄨㄛˇ ㄇㄣ˙ ㄧˋ ㄑㄧˇ ㄒㄧㄤˇ ㄅㄢˋ ㄈㄚˇ", i: "cool_04_solution.png", s: "我們一起想辦法" },
-            { t: "把話說清楚", b: "ㄩㄥˋ ㄕㄨㄛ ㄉㄜ˙ ㄅㄨˋ ㄩㄥˋ ㄎㄨ ㄉㄜ˙", i: "cool_05_talk.png", s: "用說的不用哭的" }
+            { t: "輪流玩玩具", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄌㄨㄣˊ ㄌㄧㄡˊ ㄨㄢˊ ㄨㄢˊ ㄐㄩˋ", i: "cool_01_turns.png" },
+            { t: "輸了不生氣", b: "ㄅㄧˇ ㄙㄞˋ ㄕㄨ ㄌㄜ˙ ㄅㄨˋ ㄕㄥ ㄑㄧˋ", i: "cool_02_lose.png" },
+            { t: "借東西要問", b: "ㄐㄧㄝˋ ㄉㄨㄥ ㄒㄧ ㄧㄠˋ ㄒㄧㄢ ㄨㄣˋ", i: "cool_03_ask.png" },
+            { t: "一起想辦法", b: "ㄨㄛˇ ㄇㄣ˙ ㄧˋ ㄑㄧˇ ㄒㄧㄤˇ ㄅㄢˋ ㄈㄚˇ", i: "cool_04_solution.png" },
+            { t: "把話說清楚", b: "ㄩㄥˋ ㄕㄨㄛ ㄉㄜ˙ ㄅㄨˋ ㄩㄥˋ ㄎㄨ ㄉㄜ˙", i: "cool_05_talk.png" }
         ],
         4: [
-            { t: "字跡寫漂亮", b: "ㄗˋ ㄒㄧㄝˇ ㄆㄧㄠˋ ㄌㄧㄤ˙ ㄇㄚ˙ ？", i: "notebook_01_neat.png", s: "字寫漂亮嗎？" },
-            { t: "日期對了嗎", b: "ㄖˋ ㄑㄧˊ ㄉㄨㄟˋ ㄌㄜ˙ ㄇㄚ˙ ？", i: "notebook_02_date.png", s: "日期對了嗎？" },
-            { t: "作業抄齊了", b: "ㄒㄧㄤˋ ㄇㄨˋ ㄉㄡ ㄔㄠ ㄏㄠˇ ㄌㄜ˙ ㄇㄚ˙ ？", i: "項目都抄好了嗎？" },
-            { t: "幫鄰居檢查", b: "ㄅㄤ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄐㄧㄢˇ ㄔㄚˊ", i: "notebook_04_helper.png", s: "幫同學檢查" },
-            { t: "桌面清乾淨", b: "ㄓㄨㄛ ㄇㄧㄢˋ ㄅㄠˇ ㄔˊ ㄍㄢ ㄐㄧㄥˋ", i: "notebook_05_clean.png", s: "桌面保持乾淨" }
+            { t: "字跡寫漂亮", b: "ㄗˋ ㄒㄧㄝˇ ㄆㄧㄠˋ ㄌㄧㄤ˙ ㄇㄚ˙ ？", i: "notebook_01_neat.png" },
+            { t: "日期對了嗎", b: "ㄖˋ ㄑㄧˊ ㄉㄨㄟˋ ㄌㄜ˙ ㄇㄚ˙ ？", i: "notebook_02_date.png" },
+            { t: "項目抄齊了", b: "ㄒㄧㄤˋ ㄇㄨˋ ㄉㄡ ㄔㄠ ㄏㄠˇ ㄌㄜ˙ ㄇㄚ˙ ？", i: "notebook_03_complete.png" },
+            { t: "幫同學檢查", b: "ㄅㄤ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄐㄧㄢˇ ㄔㄚˊ", i: "notebook_04_helper.png" },
+            { t: "桌面清乾淨", b: "ㄓㄨㄛ ㄇㄧㄢˋ ㄅㄠˇ ㄔˊ ㄍㄢ ㄐㄧㄥˋ", i: "notebook_05_clean.png" }
         ],
         5: [
-            { t: "東西帶齊了", b: "ㄉㄨㄥ ㄒㄧ ㄉㄡ ㄉㄞˋ ㄑㄧˊ ㄌㄜ˙ ㄇㄚ˙ ？", i: "home_01_pack.png", s: "東西都帶齊了嗎？" },
-            { t: "垃圾隨手收", b: "ㄌㄜˋ ㄙㄜˋ ㄙㄨㄟˊ ㄕㄡˇ ㄕㄡ ㄏㄠˇ", i: "home_02_trash.png", s: "垃圾隨手收好" },
-            { t: "謝謝好朋友", b: "ㄒㄧㄝˋ ㄒㄧㄝˋ ㄅㄤ ㄨㄛˇ ㄉㄜ˙ ㄖㄣˊ", i: "home_03_thanks.png", s: "謝謝幫我的人" },
-            { t: "明天見微笑", b: "ㄏㄢˊ ㄌㄠˇ ㄕ ㄕㄨㄛ ㄗㄞˋ ㄐㄧㄢˋ", i: "home_04_smile.png", s: "和老師說再見" },
-            { t: "反思好表現", b: "ㄨㄛˇ ㄐㄧㄣ ㄊㄧㄢ ㄏㄣˇ ㄋㄨˇ ㄌㄧˋ", i: "home_05_proud.png", s: "我今天很努力" }
+            { t: "東西帶齊了", b: "ㄉㄨㄥ ㄒㄧ ㄉㄡ ㄉㄞˋ ㄑㄧˊ ㄌㄜ˙ ㄇㄚ˙ ？", i: "home_01_pack.png" },
+            { t: "垃圾隨手收", b: "ㄌㄜˋ ㄙㄜˋ ㄙㄨㄟˊ ㄕㄡˇ ㄕㄡ ㄏㄠˇ", i: "home_02_trash.png" },
+            { t: "謝謝好朋友", b: "ㄒㄧㄝˋ ㄒㄧㄝˋ ㄅㄤ ㄨㄛˇ ㄉㄜ˙ ㄖㄣˊ", i: "home_03_thanks.png" },
+            { t: "明天見微笑", b: "ㄏㄢˊ ㄌㄠˇ ㄕ ㄕㄨㄛ ㄗㄞˋ ㄐㄧㄢˋ", i: "home_04_smile.png" },
+            { t: "我今天很努力", b: "ㄨㄛˇ ㄐㄧㄣ ㄊㄧㄢ ㄏㄣˇ ㄋㄨˇ ㄌㄧˋ", i: "home_05_proud.png" }
         ]
     };
 
-    function loadActions(id) {
+    function loadSubLinks(id) {
         const box = document.getElementById('action-box');
         box.innerHTML = "";
-        database[id].forEach(item => {
-            const btn = document.createElement('button');
-            btn.className = "action-btn";
-            btn.innerText = item.t;
-            btn.onclick = () => updateDisplay(item);
-            box.appendChild(btn);
-        });
+        if (database[id]) {
+            database[id].forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = "action-btn";
+                btn.innerText = item.t;
+                btn.onclick = function() { displayEffect(item); };
+                box.appendChild(btn);
+            });
+        }
     }
 
-    function updateDisplay(item) {
+    function displayEffect(item) {
         document.getElementById('txt-zh').innerText = item.t;
         document.getElementById('txt-bp').innerText = item.b;
         document.getElementById('img-target').src = "images/" + item.i;
-        currentVoiceText = item.s;
-        
+        currentVoiceText = item.t;
         score += 10;
         document.getElementById('score').innerText = score;
-        
         playCurrentVoice();
-        spawnEnergy();
+        spawnParticles();
     }
 
     function playCurrentVoice() {
         const msg = new SpeechSynthesisUtterance(currentVoiceText);
         msg.lang = 'zh-TW';
-        msg.rate = 0.9;
         window.speechSynthesis.speak(msg);
     }
 
-    function spawnEnergy() {
+    function spawnParticles() {
         const stage = document.getElementById('stage');
         for(let i=0; i<8; i++) {
             const p = document.createElement('img');
@@ -166,9 +174,8 @@
             p.className = "particle";
             p.style.left = "50%"; p.style.top = "50%";
             stage.appendChild(p);
-            
             const ang = Math.random() * Math.PI * 2;
-            const dist = 150 + Math.random() * 150;
+            const dist = 100 + Math.random() * 150;
             setTimeout(() => {
                 p.style.transform = `translate(${Math.cos(ang)*dist}px, ${Math.sin(ang)*dist}px)`;
                 p.style.opacity = "0";

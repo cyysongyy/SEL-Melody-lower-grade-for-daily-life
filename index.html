@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>和平小島 - AI 互動 SEL 教材</title>
+    <title>和平小島 - SEL 互動教材</title>
     <style>
         :root {
             --p1: #a2d2ff; --p2: #b9fbc0; --p3: #fbf8cc; --p4: #ffcfd2; --p5: #cfbaf0;
@@ -17,6 +17,7 @@
             display: flex; flex-direction: column; align-items: center; position: relative;
         }
 
+        /* 頂部標題：略微提升 */
         .header {
             margin-top: 15px; background: rgba(255,255,255,0.9);
             padding: 10px 30px; border-radius: 40px; text-align: center;
@@ -25,41 +26,48 @@
         .title { margin: 0; font-size: 22px; color: #333; }
         .bopo { font-size: 14px; color: #0369a1; font-weight: bold; display: block; }
 
+        /* 分數顯示 */
         .score-board {
             position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.9);
             padding: 8px 15px; border-radius: 25px; font-weight: bold; color: #db2777; font-size: 16px;
         }
 
+        /* 圖片區域：圖形縮小至原本的 2/3 (約 50%-60% 之間) */
         .display-area { flex-grow: 1; display: flex; justify-content: center; align-items: center; width: 80%; }
         .main-img { 
-            max-width: 60%; max-height: 50vh; 
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+            max-width: 55%; /* 圖片縮小 */
+            max-height: 45vh; /* 圖片縮小 */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
 
+        /* 選單容器：位置提升，放大選項 */
         .nav-container {
             background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
-            width: 100%; padding: 15px 0;
+            width: 100%; padding: 20px 0;
             border-top: 2px solid rgba(255,255,255,0.5);
-            position: absolute; bottom: 8vh;
+            position: absolute; bottom: 12vh; /* 位置往上提 */
         }
 
-        .time-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        /* 5個時段選項：放大 */
+        .time-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
         .time-btn {
-            border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer;
-            font-weight: bold; font-size: 15px; transition: 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer;
+            font-weight: bold; font-size: 18px; /* 字體放大 */
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .time-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .time-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
 
+        /* 行為目標按鈕（次連結）：放大 */
         .action-nav { 
-            display: flex; flex-wrap: wrap; justify(content): center; gap: 12px; 
-            max-width: 950px; margin: 0 auto; min-height: 50px; justify-content: center;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; 
+            max-width: 950px; margin: 0 auto; min-height: 60px; 
         }
         .action-btn {
-            background: white; border: 1px solid #eee; padding: 12px 22px;
-            border-radius: 15px; cursor: pointer; font-size: 18px;
+            background: white; border: 1px solid #eee; padding: 12px 25px;
+            border-radius: 15px; cursor: pointer; font-size: 18px; /* 字體放大 */
             font-weight: 600; color: #444; transition: 0.2s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
@@ -88,7 +96,7 @@
             <button class="time-btn" style="background:var(--p5)" onclick="loadSubLinks(5)">🎒 回家</button>
         </div>
         <div id="action-box" class="action-nav">
-            <p style="color:#666; font-weight:bold;">點擊上方時段開啟任務！</p>
+            <p style="color:#666; font-weight:bold; font-size:18px;">點擊上方時段開啟小任務！</p>
         </div>
     </div>
 </div>
@@ -99,7 +107,8 @@
 
     const database = {
         1: [
-            { t: "主動交作業", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄗㄨˋ ㄉㄨㄥˋ ㄐㄧㄠ ㄗㄨㄛˋ ㄧㄝˋ", i: "morning_01_pack.png" },
+            // 已更新檔名為 morning_01_homework.png
+            { t: "主動交作業", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄗㄨˋ ㄉㄨㄥˋ ㄐㄧㄠ ㄗㄨㄛˋ ㄧㄝˋ", i: "morning_01_homework.png" },
             { t: "收好桌面", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄕㄡ ㄏㄠˇ ㄓㄨㄛ ㄇㄧㄢˋ", i: "morning_02_desk.png" },
             { t: "安靜進教室", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄢ ㄐㄧㄥˋ ㄐㄧㄣˋ ㄐㄧㄠˋ ㄕˋ", i: "morning_03_quiet.png" },
             { t: "向老師問好", b: "ㄨㄛˇ ㄏㄨㄟˋ ㄒㄧㄤˋ ㄌㄠˇ ㄕ ㄨㄣˋ ㄏㄠˇ", i: "morning_04_greeting.png" },
@@ -137,7 +146,7 @@
 
     function loadSubLinks(id) {
         const box = document.getElementById('action-box');
-        box.innerHTML = "";
+        box.innerHTML = ""; // 確保每次點選都會清空再載入
         if (database[id]) {
             database[id].forEach(item => {
                 const btn = document.createElement('button');
